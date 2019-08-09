@@ -1,12 +1,20 @@
 % Surface Revolution of a function will give us the target 3d shape that we wish to generate via tailoring
-
 clear all; clc; close all
-
 deltaX=0.001;
-x_Mat=deltaX:deltaX:1.4;
-A=1.7;B=1;
-y_Mat=-A*x_Mat.^2+B*x_Mat.^4; % Function to be revolved to obtain the surface
+xRangeStart=deltaX; xRangeEnd=1.4;
+x_Mat=xRangeStart:deltaX:xRangeEnd;
+A=1;%B=1;
+
+% Define the function which is to be revolved around y-axis.
+func=@(x) -A*(x-0.85).^3;% Function to be revolved to obtain the surface
+
+% Use func2 as well in case of piecewise fuctions
+% syms func2(x);
+% func2(x) = (piecewise(0<x <0.3, func(0.3), 0.3 <= x <= xRangeEnd, func(x), 1));
+
+y_Mat=func(x_Mat);
 plot(x_Mat,y_Mat,'.')
+title('surface to be revolved')
 
 %% Plot the fraction of circumference to be removed as a function of radius.
 i=length(x_Mat);
@@ -17,14 +25,14 @@ r_Mat=zeros(i,1);
 for j=1:1:i
     dx=0.001;
     Xmat=0:dx:x_Mat(j);
-    Ymat=-A*Xmat.^2+B*Xmat.^4;
+%     Ymat=-A*Xmat.^2+B*Xmat.^4;
+    Ymat=eval(func(Xmat));
     r=arclength(Xmat,Ymat,'sp');
     r_Mat(j)=r;
     Per_sub(j)=2*pi*(r-x_Mat(j));
     Frac(j)=2*pi*(r-x_Mat(j))./(2*pi*r);
 end
 plot(r_Mat,Frac)
-
 
 %% Distribute in n-Petals
 figure
