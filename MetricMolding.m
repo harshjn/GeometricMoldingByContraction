@@ -1,10 +1,3 @@
-%% Introduction
-%{
-Uses the functions draw_rectangle and draw_lines and RescalePoly.
-We prepare a grid and draw a target 3D function on our grid that we 
-wish to generate.
-Then we create the 2-D pattern that will give us the target pattern 
-%}
 
 %% Introduction
 %{
