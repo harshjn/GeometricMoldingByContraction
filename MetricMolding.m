@@ -1,29 +1,32 @@
-
 %% Introduction
 %{
 Uses the functions draw_rectangle and draw_lines and RescalePoly.
-
 We prepare a grid and draw a target 3D function on our grid that we 
 wish to generate.
 Then we create the 2-D pattern that will give us the target 3D pattern on contracting out the black regions.
-
 The thickness of the black boundaries can be controlled by factor delta.
 The Gamma factor for contraction property of the material can also be controlled. 
 gamma = (final length after contraction)/(initial length before contraction)
-
 %}
 
-%% Step 1
-% Prepare a grid, plot our target function on it.
+%% Step 1 : Input the target Function
+
 clear all
+syms func1(a,b);
+R=5*sqrt(2);                      
+% f(a,b) = (a^2/R^2-b^2/R^2+1);   % saddle or negativeCurvature
+f(a,b) = sqrt(R^2-(a^2+b^2));     % sphere or Positive Curvature
+
 a=1; % Edge Length. Keep this as 1. Image can be scaled later.
+%% Step2 : Prepare a grid, plot our target function on it.
+
 a1=[a,0]; % basis vectors for our grid
 a2=[0,a];
 
 TargetSize=5; % If we need a 5x5 grid
 N=floor(TargetSize/2);
 
-count=1
+count=1;
 
 for i= -N:N
     for j= -N:N
@@ -51,10 +54,6 @@ i=1;
 dx=a; dy=a;
 scale =dx/2;
 
-syms func1(a,b);
-R=5*sqrt(2);
-f(a,b) = (a^2/R^2-b^2/R^2+1); % negativeCurvature
-% f(a,b) = sqrt(R^2-(a^2+b^2)); % sphere
 
 PlotShow=1;
 [X,Y] = meshgrid(x1,y1);
@@ -106,7 +105,8 @@ for k=1:length(idx)-1
     coord_Y= [ P1(2)+y Q1(2)+y  P2(2)+y  Q2(2)+y ];
     draw_rectangle([x y],2*cFactor,2*cFactor,0,'w',0.1)
     % We input contraction factor gamma as a fraction from 0 to 1.                                              
-    % gamma=Final/Initial Length
+    % gamma=Final/Initial Length 
+    % delta and gamma are to be input into the function draw_lines.
     % We also input the fraction of black boundary surrounding the regions.
     draw_lines([x y],cFactor,E_1(k),E_2(k), eigVect1(:,k), eigVect2(:,k),'k',0.1,0.33) 
             % (Center, cFactor , e1Val , e2Val , E1Vec,E2Vec,rgb,delta,gamma)
@@ -115,3 +115,5 @@ for k=1:length(idx)-1
 end
 axis equal
 axis off
+
+title('Generated 2d Precursor pattern')
