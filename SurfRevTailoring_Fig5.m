@@ -1,7 +1,12 @@
 % Surface Revolution of a function will give us the target 3d shape that we wish to generate via tailoring
 % We can choose to split the patterns towards the end in order to reduce
 % the effect of wrinkling at ends with the boolean SPLIT.
+% Step 1: We plot the function to be rotated around x=0 or Y-axis.
+% Step 2: We plot the fraction of perimeter to be removed at a radius r.
+% Step 3: We draw the polar plot for our desired black and white precursor pattern.
 
+
+%% Step 1: We plot the function to be revolved around x=0 or Y-axis.
 clear all; clc; close all
 deltaX=0.01;  % Set this to smaller value for a more continous pattern.
 xRangeStart=deltaX; xRangeEnd=1.4;
@@ -20,7 +25,7 @@ title('surface to be revolved')
 
 SPLIT=0;
 
-%% Plot the fraction of circumference to be removed as a function of radius.
+%% Step 2: We plot the fraction of perimeter to be removed as a function of radius.
 figure;
 i=length(x_Mat);
 Per_sub=zeros(i,1);
@@ -39,15 +44,15 @@ for j=1:1:i
 end
 plot(r_Mat,Frac)
 title('Fraction of perimeter to be removed at radius r')
-%% Distribute in n-Petals with optional SPLIT
-% We divide the fraction to be removed into petals.
+
+%% Step 3: We draw the polar plot for our desired black and white precursor pattern.
+%% Distribute in n-Petals. Further distribute with optional SPLIT
+
 figure
-% Contraction factor gamma given as InitalLength/ContractedLength
-gamma=0.5;         
+gamma=0.5;     % From theory, Contraction factor gamma given as InitalLength/ContractedLength
 n_=8; % Number of petals
 alpha=1/gamma;  % Could be replaced by a matrix instead of a constant value
 alphaMat=alpha*ones(length(r_Mat),1);
-
 
 cycleCount=length(r_Mat)
 
